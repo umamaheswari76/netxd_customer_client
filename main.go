@@ -4,16 +4,17 @@ import (
 	"context"
 	"fmt"
 	"log"
-	cst "netxd_project/netxd_project_proto_proto"
 
+	cst "github.com/umamaheswari76/netxd_customer_proto/customer"
+	
 	"google.golang.org/grpc"
 )
 
-func main(){
+func main() {
 
 	//Dial creates a client connection to the given target.
 	conn, err := grpc.Dial("localhost:5001", grpc.WithInsecure())
-	if err != nil{
+	if err != nil {
 		log.Fatalf("Failed to connect: %v", err)
 	}
 
@@ -28,11 +29,10 @@ func main(){
 		BankId:     "1",
 		Balance:    5000,
 	})
-	if err!=nil{
+	if err != nil {
 		log.Fatalf("Failed to call CreateCustomer: %v", err)
 	}
 
 	fmt.Printf("Response: %v\n", response.CustomerId)
-
 
 }
