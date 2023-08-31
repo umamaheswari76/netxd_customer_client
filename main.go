@@ -6,7 +6,7 @@ import (
 	"log"
 
 	cst "github.com/umamaheswari76/netxd_customer_proto/customer"
-	
+	tsn "github.com/umamaheswari76/netxd_customer_proto/transaction"
 	"google.golang.org/grpc"
 )
 
@@ -21,18 +21,29 @@ func main() {
 	defer conn.Close()
 
 	client := cst.NewCustomerServiceClient(conn)
+	transaction_client := tsn.NewTransactionServiceClient(conn)
 
 	response, err := client.CreateCustomer(context.Background(), &cst.Customer{
-		CustomerId: 101,
-		FirstName:  "umamaheswari",
+		CustomerId: 102,
+		FirstName:  "aaaaa",
 		SecondName: "m",
 		BankId:     "1",
-		Balance:    5000,
+		Balance:    6000,
 	})
 	if err != nil {
 		log.Fatalf("Failed to call CreateCustomer: %v", err)
 	}
 
-	fmt.Printf("Response: %v\n", response.CustomerId)
+	//calling transaction
+	transaction_response, err := transaction_client.Transfer(context.Background(), &tsn.Transaction{
+		Fromaccount: 101,
+		Toaccount:   102,
+		Amount:      500,
+	})
+	if err!= nil{
+		log.Fatalf("Failed to call Transafer: %v", err)
+	}
 
+	fmt.Printf("Response: %v\n", response.CustomerId)
+	fmt.Printf("Response: %v\n", transaction_response)
 }
